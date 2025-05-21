@@ -44,7 +44,7 @@ use({
 ## Requirements
 
 * Neovim 0.11
-* Linux
+* Linux (tested)
 * g++ installed and available in your system path
 * Internet access for fetching problem data via `:CFSetup`
 
