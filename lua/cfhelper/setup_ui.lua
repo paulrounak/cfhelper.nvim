@@ -29,9 +29,10 @@ function M.input_url(callback)
   vim.api.nvim_buf_set_option(input_buf, "modifiable", true)
   vim.api.nvim_buf_set_option(input_buf, "buflisted", false)
 
-  vim.fn.prompt_setprompt(input_buf, ">")
+  vim.fn.prompt_setprompt(input_buf, "> ")
   vim.fn.prompt_setcallback(input_buf, function(input)
     vim.api.nvim_win_close(win, true)
+    vim.cmd("redraw!")
     if input and input ~= "" then
       callback(input)
     else
