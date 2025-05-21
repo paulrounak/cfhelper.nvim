@@ -6,10 +6,10 @@ This plugin automates the workflow of fetching sample test cases and checking yo
 
 ## Features
 
-**`:CFSetup <url>`**
+1. **`:CFSetup <url>`**
 Parses a Codeforces problem page and automatically creates `input.txt` and `output.txt` inside a `.cfhelper` directory beside your source file.
 
-**`:CFRun`**
+2. **`:CFRun`**
 Compiles your current C++ file, runs it using the generated `input.txt`, and compares the result with `output.txt`. Prints `Passed` or `Failed` based on `diff`.
 
 All generated files including `input.txt`, `output.txt`, `result.txt`, `problem.html`, and the compiled binary are stored in a `.cfhelper` directory located beside your source file. This keeps your workspace clean and organized.
