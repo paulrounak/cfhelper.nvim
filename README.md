@@ -51,10 +51,12 @@ use({
 ## Usage
 
 1. Open a C++ file in Neovim.
-2. Run `:CFSetup <codeforces_problem_url>` <br>
-   Example: `:CFSetup https://codeforces.com/problemset/problem/4/A`
-3. Write the solution to the problem in the C++ file.
-4. Run `:CFRun` to compile and test against the sample input/output.
+2. Run `:CFSetup <codeforces_problem_url>` -- for example: <br><br>
+   ```
+   :CFSetup https://codeforces.com/contest/2096/problem/B
+   ```
+4. Write the solution to the problem in the C++ file.
+5. Run `:CFRun` to compile and test against the sample input/output.
 
 All temporary and generated files will be stored in a `.cfhelper` folder beside your code file.
 
