@@ -51,7 +51,7 @@ use({
 ## Usage
 
 1. Open a C++ file in Neovim.
-2. Run `:CFSetup <codeforces_problem_url>`
+2. Run `:CFSetup <codeforces_problem_url>` <br>
    Example: `:CFSetup https://codeforces.com/problemset/problem/4/A`
 3. Write the solution to the problem in the C++ file.
 4. Run `:CFRun` to compile and test against the sample input/output.
