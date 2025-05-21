@@ -7,6 +7,11 @@ end, {})
 
 vim.api.nvim_create_user_command("CFSetup", function()
   require("cfhelper.setup_ui").input_url(function(url)
-    cf_setup.setup(url)
+    local ok, err = pcall(cf_setup.setup, url)
+    if ok then
+      vim.notify("CFSetup completed for: " .. url, vim.log.levels.INFO, { title = "cfhelper.nvim" })
+    else
+      vim.notify("CFSetup failed: " .. err, vim.log.levels.ERROR, { title = "cfhelper.nvim" })
+    end
   end)
 end, {})

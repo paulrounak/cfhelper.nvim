@@ -20,15 +20,22 @@ function M.input_url(callback)
   })
 
   vim.api.nvim_buf_set_lines(input_buf, 0, -1, false, { "" })
-  vim.api.nvim_buf_set_option(input_buf, "buftype", "prompt")
 
-  vim.fn.prompt_setprompt(input_buf, "Enter Codeforces URL: ")
+  -- Proper scratch buffer settings
+  vim.api.nvim_buf_set_option(input_buf, "buftype", "prompt")
+  vim.api.nvim_buf_set_option(input_buf, "filetype", "cfhelper_input")
+  vim.api.nvim_buf_set_option(input_buf, "bufhidden", "wipe")
+  vim.api.nvim_buf_set_option(input_buf, "swapfile", false)
+  vim.api.nvim_buf_set_option(input_buf, "modifiable", true)
+  vim.api.nvim_buf_set_option(input_buf, "buflisted", false)
+
+  vim.fn.prompt_setprompt(input_buf, ">")
   vim.fn.prompt_setcallback(input_buf, function(input)
     vim.api.nvim_win_close(win, true)
     if input and input ~= "" then
       callback(input)
     else
-      print("CFSetup canceled.")
+      vim.notify("CFSetup cancelled.", vim.log.levels.WARN, { title = "cfhelper.nvim" })
     end
   end)
 
