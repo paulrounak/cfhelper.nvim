@@ -1,25 +1,67 @@
-# cfhelper.nvim
+<p align="center">
+  <img width="128" height="128" alt="Logo" src="https://github.com/paulrounak/cfhelper.nvim/blob/main/assets/logo.png" />
+</p>
 
-A lightweight Neovim plugin to simplify running and testing Codeforces problems locally.
+<h1 align="center">cfhelper.nvim</h1>
 
-This plugin automates the workflow of fetching sample test cases and checking your solution output against them.
+<p align="center">
+    <img alt="Latest release" src="https://img.shields.io/github/v/release/paulrounak/cfhelper.nvim?style=for-the-badge&logo=neovim&color=93c5fd&labelColor=1e293b" />
+    <img alt="License" src="https://img.shields.io/github/license/paulrounak/cfhelper.nvim?style=for-the-badge&logo=open-source-initiative&color=fda4af&labelColor=1e293b" />
+    <img alt="Stars" src="https://img.shields.io/github/stars/paulrounak/cfhelper.nvim?style=for-the-badge&logo=github&color=ddd6fe&labelColor=1e293b" />
+</p>
+
+<p align="center">
+  A lightweight Neovim plugin to simplify running and testing Codeforces problems locally.  
+  Automate your workflow and keep your workspace clean and organized.
+</p>
+
+
+> [!Tip]  
+> No browser extension is required.
+
 
 ## Features
 
-1. **`:CFSetup <url>`**
-Parses a Codeforces problem page and automatically creates `input.txt` and `output.txt` inside a `.cfhelper` directory beside your source file.
+- **`:CFSetup <url>`**  
+  Parses a Codeforces problem page and creates the following files inside a `.cfhelper` directory:
+  - `input.txt` (sample input)
+  - `output.txt` (expected output)
+  - `problem.html` (problem statement)
+  - All stored beside your source file.
 
-2. **`:CFRun`**
-Compiles your current C++ file, runs it using the generated `input.txt`, and compares the result with `output.txt`. Prints `Passed` or `Failed` based on `diff`.
+- **`:CFRun`**  
+  Compiles your current C++ file, runs it with `input.txt`, and compares the output with `output.txt`.  
+  The result is printed and stored in `result.txt`.
 
-All generated files including `input.txt`, `output.txt`, `result.txt`, `problem.html`, and the compiled binary are stored in a `.cfhelper` directory located beside your source file. This keeps your workspace clean and organized.
+- **Organized Output**  
+  All files including the compiled binary are saved inside `.cfhelper/`, keeping your workspace clean.
+
+- **No Browser Extension Needed**  
+  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
+
+
+## Why This Plugin
+
+The typical process for testing Codeforces problems manually is:
+
+1. Compile your code
+2. Run the binary
+3. Paste the sample input
+4. Compare output with the expected output manually
+
+`cfhelper.nvim` automates all of these steps within Neovim, allowing you to focus on writing correct and efficient code.
+
+
 
 ## Supported Languages
-- C++
+
+- C++ (current)
+
+
 
 ## Installation
 
-**Using lazy.nvim:**
+### Using lazy.nvim
 
 ```lua
 {
@@ -30,7 +72,7 @@ All generated files including `input.txt`, `output.txt`, `result.txt`, `problem.
 }
 ```
 
-**Using packer.nvim:**
+### Using packer.nvim
 
 ```lua
 use({
@@ -41,39 +83,44 @@ use({
 })
 ```
 
+
+
 ## Requirements
 
-* Neovim 0.11
-* Linux (tested)
-* g++ installed and available in your system path
-* Internet access for fetching problem data via `:CFSetup`
+- Neovim `>= 0.11`
+- Linux (tested only on Linux)
+- `g++` installed and available in your system path
+- Internet access for fetching problem data
+
+
 
 ## Usage
 
 1. Open a C++ file in Neovim.
-2. Run `:CFSetup <codeforces_problem_url>` -- for example: <br><br>
+2. Run the setup command with a Codeforces problem URL. For example: <br>
+
    ```
    :CFSetup https://codeforces.com/contest/2096/problem/B
    ```
-4. Write the solution to the problem in the C++ file.
-5. Run `:CFRun` to compile and test against the sample input/output.
+3. Write your solution in the current file.
+4. Run the test:
+   ```vim
+   :CFRun
+   ```
+5. Results will be printed in Neovim and saved to `.cfhelper/result.txt`.
 
-All temporary and generated files will be stored in a `.cfhelper` folder beside your code file.
 
-## Why This Plugin
-
-When solving Codeforces problems, the manual process usually looks like this:
-
-1. Compile your code
-2. Run the binary
-3. Paste the input manually
-4. Compare the output with the sample output manually
-
-This plugin automates that entire process, reducing time and human error.
 
 ## Future Plans
 
-* Support for multiple test cases
-* Floating UI for test results
-* Diagnostic display for mismatches
-* Add multi-language support
+- Support for multiple sample test cases
+- Floating UI to display test results
+- Diagnostic highlighting for incorrect output lines
+- Support for other languages (e.g., Python, Java)
+
+
+
+## Contributing
+
+Contributions are welcome. Please open issues for bugs or feature requests, or submit a pull request if you have improvements.
+
