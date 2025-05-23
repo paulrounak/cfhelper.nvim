@@ -33,11 +33,11 @@
   Compiles your current C++ file, runs it with `input.txt`, and compares the output with `output.txt`.  
   The result is printed and stored in `result.txt`.
 
-> [!Note]  
->  All generated files including the compiled binary are saved inside `.cfhelper/` beside your source file, keeping your workspace clean.
+- **Organized Output**  
+  All files including the compiled binary are saved inside `.cfhelper/`, keeping your workspace clean.
 
-> [!Note]  
->  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
+- **No Browser Extension Needed**  
+  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
 
 
 ## Why This Plugin
@@ -55,7 +55,8 @@ The typical process for testing Codeforces problems manually is:
 
 ## Supported Languages
 
-- C++
+- C++ (current)
+
 
 
 ## Installation
