@@ -8,7 +8,6 @@ local function ensure_trailing_newline(file)
 	end
 	local content = f:read("*a")
 	if not content:match("\n$") then
-		f:seek("end")
 		f:write("\n")
 	end
 	f:close()
