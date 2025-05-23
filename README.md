@@ -17,7 +17,7 @@
 
 
 > [!Tip]  
-> No browser extension is required.
+>  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
 
 
 ## Features
@@ -37,9 +37,6 @@
 
 > [!Note]  
 >  All generated files including the compiled binary are saved inside `.cfhelper/` beside your source file, keeping your workspace clean.
-
-> [!Note]  
->  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
 
 
 ## Why This Plugin
