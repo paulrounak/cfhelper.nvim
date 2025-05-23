@@ -104,7 +104,6 @@ use({
 
 ## Future Plans
 
-- Support for multiple sample test cases
 - Floating UI to display test results
 - Diagnostic highlighting for incorrect output lines
 - Support for other languages (e.g., Python, Java)
