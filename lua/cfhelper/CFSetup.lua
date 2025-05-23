@@ -21,7 +21,7 @@ function M.setup(url)
 	local helper_dir = file_dir .. "/.cfhelper"
 	vim.fn.mkdir(helper_dir, "p")
 
-	-- Download problem with browser headers to avoid robocheck...
+	-- Download problem with browser headers to avoid robocheck... 
 	local html_path = helper_dir .. "/problem.html"
 	local curl_cmd = string.format(
 		"curl -sL --compressed -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0 Safari/537.36' -e 'https://codeforces.com' '%s' -o '%s'",
