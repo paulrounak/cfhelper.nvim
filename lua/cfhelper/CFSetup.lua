@@ -8,7 +8,7 @@ end
 -- Extract text from <div> blocks or fallback to plain <pre> content
 local function extract_input(pre)
 	local lines = {}
-	for line in pre:gmatch("<div[^>]*>(.-)</div>") do
+	for line in pre:gmatch("<div[^>]->(.-)</div>") do
 		table.insert(lines, decode_html(line))
 	end
 	if #lines == 0 then
