@@ -95,16 +95,9 @@ use({
 ## Usage
 
 1. Open a C++ file in Neovim.
-2. Run the setup command with a Codeforces problem URL. For example: <br>
-
-   ```
-   :CFSetup https://codeforces.com/contest/2096/problem/B
-   ```
+2. Run the `:CFSetup` command and enter a Codeforces problem URL in the floating window.
 3. Write your solution in the current file.
-4. Run the test:
-   ```vim
-   :CFRun
-   ```
+4. Run the test using `:CFRun`.
 5. Results will be printed in Neovim and saved to `.cfhelper/result.txt`.
 
 
