@@ -22,7 +22,9 @@
 
 ## Features
 
-- **`:CFSetup <url>`**  
+- **`:CFSetup`**  
+  > Launches a window where you need to paste your codeforces URL and hit \<Return> in normal mode. \<Esc> in normal mode to cancel.
+  
   Parses a Codeforces problem page and creates the following files inside a `.cfhelper` directory:
   - `input.txt` (sample input)
   - `output.txt` (expected output)
