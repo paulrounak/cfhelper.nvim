@@ -16,7 +16,7 @@
 </p>
 
 
-> [!Tip]  
+> [!Note]  
 >  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
 
 
