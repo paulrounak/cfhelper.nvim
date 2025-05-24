@@ -19,6 +19,10 @@
 > [!Note]  
 >  Unlike many alternatives, cfhelper.nvim does not depend on browser extensions like Competitive Companion.
 
+## Demo
+
+https://github.com/user-attachments/assets/a8b18d08-23bf-4daf-888c-2f820c2308eb
+
 
 ## Features
 
