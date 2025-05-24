@@ -99,9 +99,6 @@ function M.run()
 		table.insert(results, { line = header, status = status })
 
 		if status == "fail" then
-			-- Add blank line
-			table.insert(results, { line = "", status = "info" })
-
 			-- Add all expected lines
 			for _, line in ipairs(expected_lines) do
 				table.insert(results, { line = "Expected: " .. line, status = "info" })
