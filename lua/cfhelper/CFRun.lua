@@ -1,19 +1,22 @@
 local M = {}
+local ui = require("cfhelper.CFRun_ui")
 
 local function normalize_file(file)
   local lines = {}
   local f = io.open(file, "r")
-  if not f then return end
+  if not f then
+    return
+  end
   for line in f:lines() do
-    -- Remove trailing whitespace on each line
     line = line:gsub("%s+$", "")
     table.insert(lines, line)
   end
   f:close()
 
-  -- Rewrite file with normalized lines and single trailing newline
   f = io.open(file, "w")
-  if not f then return end
+  if not f then
+    return
+  end
   for _, line in ipairs(lines) do
     f:write(line, "\n")
   end
@@ -36,13 +39,12 @@ function M.run()
     if f then
       f:write(compile_output)
       f:close()
-      print("Compilation failed. See .cfhelper/compile_error.txt")
-    else
-      print("Compilation failed and couldn't write error file.")
     end
+    vim.notify("Compilation failed. See .cfhelper/compile_error.txt", vim.log.levels.ERROR)
     return
   end
 
+  local results = {}
   local i = 1
   while true do
     local input_file = string.format("%s/input%d.txt", helper_dir, i)
@@ -55,26 +57,74 @@ function M.run()
     local run_cmd = string.format("%s < %s > %s", exec, input_file, result_file)
     os.execute(run_cmd)
 
-    -- Normalize both expected and actual output files
     normalize_file(output_file)
     normalize_file(result_file)
 
-    -- Use diff with -Z to ignore trailing whitespace differences
-    local diff_cmd = string.format("diff -q -Z %s %s", output_file, result_file)
-    vim.fn.system(diff_cmd)
+    -- Read expected and actual lines
+    local expected_lines = {}
+    local actual_lines = {}
 
-    if vim.v.shell_error == 0 then
-      print(string.format("Test case #%d: Passed", i))
-    else
-      print(string.format("Test case #%d: Failed", i))
+    local f = io.open(output_file, "r")
+    if f then
+      for line in f:lines() do
+        table.insert(expected_lines, line)
+      end
+      f:close()
     end
+
+    f = io.open(result_file, "r")
+    if f then
+      for line in f:lines() do
+        table.insert(actual_lines, line)
+      end
+      f:close()
+    end
+
+    -- Check if all lines match
+    local is_pass = true
+    if #expected_lines ~= #actual_lines then
+      is_pass = false
+    else
+      for idx = 1, #expected_lines do
+        if expected_lines[idx] ~= actual_lines[idx] then
+          is_pass = false
+          break
+        end
+      end
+    end
+
+    -- Add test case header
+    local status = is_pass and "pass" or "fail"
+    local header = string.format("Test case #%d: %s", i, is_pass and "Passed" or "Failed")
+    table.insert(results, { line = header, status = status })
+
+    if status == "fail" then
+      -- Add all expected lines
+      for _, line in ipairs(expected_lines) do
+        table.insert(results, { line = "Expected: " .. line, status = "info" })
+      end
+
+      -- Add all output lines
+      for _, line in ipairs(actual_lines) do
+        table.insert(results, { line = "Output:   " .. line, status = "info" })
+      end
+    end
+    -- Add blank line
+    table.insert(results, { line = "", status = "info" })
 
     i = i + 1
   end
 
-  if i == 1 then
-    print("No test cases found.")
+  if #results == 0 then
+    table.insert(results, { line = "No test cases found.", status = "info" })
+  else
+    -- Remove final trailing blank line
+    if results[#results] and results[#results].line == "" then
+      table.remove(results, #results)
+    end
   end
+
+  ui.show_results(results)
 end
 
 return M
