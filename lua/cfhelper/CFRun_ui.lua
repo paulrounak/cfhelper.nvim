@@ -13,7 +13,7 @@ function M.show_results(results)
 
   local width = math.min(max_line_width + 10, math.floor(vim.o.columns * 0.7))
   local height = math.floor(#results)
-  local row = 0
+  local row = math.floor((vim.o.lines - height) / 2)
   local col = math.floor((vim.o.columns - width) / 2)
 
   local win = vim.api.nvim_open_win(buf, true, {
