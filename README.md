@@ -112,8 +112,8 @@ use({
 - Support for other languages (e.g., Python, Java)
 
 
-
 ## Contributing
 
 Contributions are welcome. Please open issues for bugs or feature requests, or submit a pull request if you have improvements.
 
+<img alt="Footer" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&section=footer&height=105" width=100%/>
