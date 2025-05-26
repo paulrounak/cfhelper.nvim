@@ -108,7 +108,6 @@ use({
 
 ## Future Plans
 
-- Diagnostic highlighting for incorrect output lines
 - Support for other languages (e.g., Python, Java)
 
 
