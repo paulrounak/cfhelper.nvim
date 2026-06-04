@@ -1,55 +1,76 @@
 local M = {}
 local ui = require("cfhelper.CFSetup_ui")
 
--- Extract all sample <pre> blocks safely
-local function extract_all_pre_blocks(html)
-    local blocks = {}
-    for block in html:gmatch("<pre[^>]*>(.-)</pre>") do
-        table.insert(blocks, block)
-    end
-    return blocks
+local function decode_html(text)
+    return text
+        :gsub("&lt;", "<")
+        :gsub("&gt;", ">")
+        :gsub("&amp;", "&")
+        :gsub("&nbsp;", " ")
 end
 
-
--- Convert CF sample block into clean text
 local function extract_sample_block(pre_block)
     local lines = {}
 
-    -- Extract from Codeforces <div class="test-example-line">
-    for line in pre_block:gmatch("<div[^>]*>(.-)</div>") do
-        line = line
-            :gsub("<.->", "")     -- remove nested tags if any
-            :gsub("&lt;", "<")
-            :gsub("&gt;", ">")
-            :gsub("&amp;", "&")
-            :gsub("&nbsp;", " ")
+    -- Modern Codeforces format
+    for line in pre_block:gmatch('<div class="test%-example%-line[^"]*">(.-)</div>') do
+        line = decode_html(line)
             :gsub("^%s+", "")
             :gsub("%s+$", "")
 
-        if line ~= "" then
-            table.insert(lines, line)
+        table.insert(lines, line)
+    end
+
+    if #lines > 0 then
+        return table.concat(lines, "\n")
+    end
+
+    -- Fallback for older CF pages
+    return decode_html(
+        pre_block
+            :gsub("<br%s*/?>", "\n")
+            :gsub("<.->", "")
+            :gsub("^%s+", "")
+            :gsub("%s+$", "")
+    )
+end
+
+local function extract_samples(html)
+    local tests = {}
+
+    local sample_section =
+        html:match('<div class="sample%-tests">(.-)</div><div class="note">')
+
+    if not sample_section then
+        sample_section =
+            html:match('<div class="sample%-tests">(.-)</div>%s*</div>%s*<p>')
+    end
+
+    if not sample_section then
+        return tests
+    end
+
+    local pre_blocks = {}
+
+    for pre in sample_section:gmatch("<pre>(.-)</pre>") do
+        table.insert(pre_blocks, pre)
+    end
+
+    for i = 1, #pre_blocks, 2 do
+        local input_pre = pre_blocks[i]
+        local output_pre = pre_blocks[i + 1]
+
+        if input_pre and output_pre then
+            table.insert(tests, {
+                input = extract_sample_block(input_pre),
+                output = extract_sample_block(output_pre),
+            })
         end
     end
 
-    -- If no div-based format found, fallback to raw pre text
-    if #lines == 0 then
-        local text = pre_block
-            :gsub("<br%s*/?>", "\n")
-            :gsub("<.->", "")
-            :gsub("&lt;", "<")
-            :gsub("&gt;", ">")
-            :gsub("&amp;", "&")
-            :gsub("&nbsp;", " ")
-            :gsub("^%s+", "")
-            :gsub("%s+$", "")
-
-        return text
-    end
-
-    return table.concat(lines, "\n")
+    return tests
 end
 
--- Main fetch function
 local function fetch_and_parse(url)
     local file_dir = vim.fn.expand("%:p:h")
     local helper_dir = file_dir .. "/.cfhelper"
@@ -79,44 +100,37 @@ local function fetch_and_parse(url)
     local html = f:read("*a")
     f:close()
 
-    local pre_blocks = extract_all_pre_blocks(html)
+    local tests = extract_samples(html)
 
-    if #pre_blocks < 2 then
+    if #tests == 0 then
         print("Failed to parse samples")
         return
     end
 
-    local test_count = math.floor(#pre_blocks / 2)
-
-    for i = 1, test_count do
-        local input_block = pre_blocks[i * 2 - 1]
-        local output_block = pre_blocks[i * 2]
-
-        local input_text = extract_sample_block(input_block)
-        local output_text = extract_sample_block(output_block)
-
+    for i, test in ipairs(tests) do
         local input_path = string.format("%s/input%d.txt", helper_dir, i)
         local output_path = string.format("%s/output%d.txt", helper_dir, i)
 
         local in_file = io.open(input_path, "w")
         if in_file then
-            in_file:write(input_text)
+            in_file:write(test.input)
             in_file:close()
         end
 
         local out_file = io.open(output_path, "w")
         if out_file then
-            out_file:write(output_text)
+            out_file:write(test.output)
             out_file:close()
         end
     end
 
-    print(string.format("Wrote %d sample test case(s) to .cfhelper/", test_count))
+    print(string.format(
+        "Wrote %d sample test case(s) to .cfhelper/",
+        #tests
+    ))
 end
 
-------------------------------------------------------------
 -- UI entry
-------------------------------------------------------------
 function M.setup()
     ui.prompt_url(fetch_and_parse)
 end
